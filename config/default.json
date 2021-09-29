@@ -1,0 +1,5 @@
+{
+	"port": 5000,
+	"mongoUri": "mongodb+srv://Bobkov:Nhk09327rus!@cluster0.yxkny.mongodb.net/angularHospital?retryWrites=true&w=majority",
+	"jwtSecret": "evgenyBobkov"
+}
