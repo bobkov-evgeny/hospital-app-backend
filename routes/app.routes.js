@@ -4,7 +4,40 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const Item = require("../models/Item");
 const router = Router();
+
+
+////////////////
+// TABLE DATA ////
+////////////////
+
+router.get("/totalItems", (req, res) => {
+	try {
+		const data = User.find().then(result => {
+			res.json(result)
+		})
+	} catch (err) {
+		console.log(err);
+		res.json('Что-то пошло не так. Лог в консоли')
+	}
+})
+
+
+
+////////////////////////
+// USER AUTHORIZATION ////
+////////////////////////
+
+
+router.post("/checkToken", async (req, res) => {
+	try {
+		const {authToken, userId} = req.body;
+		if(jwt.decode(authToken).userId === userId) res.json({valid: true})
+	} catch (err) {
+		res.json({ valid: false });
+	}
+})
 
 router.post(
 	"/register",
