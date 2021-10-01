@@ -7,37 +7,45 @@ const User = require("../models/User");
 const Item = require("../models/Item");
 const router = Router();
 
-
 ////////////////
 // TABLE DATA ////
 ////////////////
 
 router.get("/totalItems", (req, res) => {
 	try {
-		const data = User.find().then(result => {
-			res.json(result)
-		})
+		const data = User.find().then((result) => {
+			res.json(result);
+		});
 	} catch (err) {
 		console.log(err);
-		res.json('Что-то пошло не так. Лог в консоли')
+		res.json("Что-то пошло не так. Лог в консоли");
 	}
-})
+});
 
-
+router.post("/saveItem", async (req, res) => {
+	try {
+		const { userName, doctorName, date, complains } = req.body;
+		const item = new Item({ userName, doctorName, date, complains });
+		await item.save();
+		res.json({ message: "Запись сохранена" });
+	} catch (err) {
+		console.log(err);
+		res.json({ message: "Что-то пошло не так." });
+	}
+});
 
 ////////////////////////
 // USER AUTHORIZATION ////
 ////////////////////////
 
-
 router.post("/checkToken", async (req, res) => {
 	try {
-		const {authToken, userId} = req.body;
-		if(jwt.decode(authToken).userId === userId) res.json({valid: true})
+		const { authToken, userId } = req.body;
+		if (jwt.decode(authToken).userId === userId) res.json({ valid: true });
 	} catch (err) {
 		res.json({ valid: false });
 	}
-})
+});
 
 router.post(
 	"/register",
